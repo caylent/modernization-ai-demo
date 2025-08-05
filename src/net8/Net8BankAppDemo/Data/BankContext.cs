@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Net8BankAppDemo.Data;
 
+// Entity Framework Core context - replaces manual SqlConnection management
 public class BankContext : DbContext
 {
     public BankContext(DbContextOptions<BankContext> options) : base(options) { }

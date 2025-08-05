@@ -18,6 +18,7 @@ public class TransactionController : ControllerBase
     [HttpGet("{accountId}")]
     public async Task<ActionResult<string>> Get(int accountId)
     {
+        // LINQ with EF Core - secure parameterized queries vs raw SQL concatenation
         var transactions = await _context.Transactions
             .Where(t => t.FromAccount == accountId.ToString() || t.ToAccount == accountId.ToString())
             .ToListAsync();
@@ -34,6 +35,7 @@ public class TransactionController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<string>> Post([FromBody] TransferRequest request)
     {
+        // Strongly-typed request model vs multiple [FromBody] parameters
         var transaction = new Transaction
         {
             FromAccount = request.From,
@@ -42,7 +44,7 @@ public class TransactionController : ControllerBase
         };
 
         _context.Transactions.Add(transaction);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(); // Safe parameterized insert
 
         return Ok("Transfer completed.");
     }
